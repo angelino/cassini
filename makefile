@@ -1,6 +1,6 @@
 DB = enceladus
 
-BUILD = ${CURDIR}/src/build.sql
+BUILD = ${CURDIR}/build.sql
 CSV = '${CURDIR}/data/master_plan.csv'
 
 SCRIPTS = ${CURDIR}/src/scripts
