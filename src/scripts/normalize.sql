@@ -63,10 +63,15 @@ create table events(
   request_id int references requests(id)
 );
 
-insert into events(time_stamp, title, description)
+insert into events(time_stamp, title, description, event_type_id, target_id, team_id, request_id, spass_type_id)
 select import.master_plan.start_time_utc::timestamptz at time zone 'UTC',
        import.master_plan.title,
-       import.master_plan.description
+       import.master_plan.description,
+       event_types.id as event_type_id,
+       targets.id as target_id,
+       teams.id as team_id,
+       requests.id as request_id,
+       spass_types.id as spass_type_id
   from import.master_plan
          left join event_types
              on event_types.description = import.master_plan.library_definition
