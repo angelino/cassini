@@ -84,3 +84,20 @@ select import.master_plan.start_time_utc::timestamptz at time zone 'UTC',
          left join spass_types
              on spass_types.description = import.master_plan.spass_type;
 
+drop view if exists enceladus_events;
+create materialized view enceladus_events as
+  select
+    events.id,
+    events.title,
+    events.description,
+    events.time_stamp,
+    events.time_stamp::date as date,
+    event_types.description as event,
+    to_tsvector(event_types.description) as search
+  from events
+    inner join event_types
+      on event_types.id = events.event_type_id
+  where events.target_id = (select id from targets where description = 'Enceladus')
+  order by events.time_stamp;
+
+create index idx_event_search on enceladus_events using GIN(search);
