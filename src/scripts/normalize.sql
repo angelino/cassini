@@ -93,6 +93,7 @@ create materialized view enceladus_events as
     events.time_stamp,
     events.time_stamp::date as date,
     event_types.description as event,
+    -- https://www.postgresql.org/docs/current/textsearch-controls.html
     to_tsvector(event_types.description) as search
   from events
     inner join event_types

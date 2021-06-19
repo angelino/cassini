@@ -56,6 +56,8 @@ select id, title
 from enceladus_events
 where search @@ to_tsquery('closest');
 
+-- see more about matchers: https://www.postgresql.org/docs/current/functions-textsearch.html
+
 select
   (time_stamp at time zone 'UTC'),
   title
