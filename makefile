@@ -1,7 +1,6 @@
 DB = enceladus
 
 BUILD = ${CURDIR}/build.sql
-CSV = '${CURDIR}/data/master_plan.csv'
 
 SCRIPTS = ${CURDIR}/src/scripts
 MASTER = $(SCRIPTS)/import.sql
@@ -14,7 +13,8 @@ master:
 	@cat $(MASTER) >> $(BUILD)
 
 import: master
-	@echo "COPY import.master_plan FROM $(CSV) WITH DELIMITER ',' HEADER CSV;" >> $(BUILD)
+	@echo "COPY import.master_plan FROM '${CURDIR}/data/master_plan.csv' WITH DELIMITER ',' HEADER CSV;" >> $(BUILD)
+	@echo "COPY import.inms FROM '${CURDIR}/data/INMS/inms.csv' WITH DELIMITER ',' HEADER CSV;" >> $(BUILD)
 
 normalize: import
 	@cat $(NORMALIZE) >> $(BUILD)

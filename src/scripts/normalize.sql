@@ -102,3 +102,17 @@ create materialized view enceladus_events as
   order by events.time_stamp;
 
 create index idx_event_search on enceladus_events using GIN(search);
+
+-- INMS
+-- cleanup
+delete from import.inms where sclk IS NULL or sclk = '';
+delete from import.inms where sclk = 'sclk';
+
+drop materialized view if exists flyby_altitudes;
+create materialized view flyby_altitudes as
+select
+    (sclk::timestamp) as time_stamp,
+    (alt_t::numeric(10,3)) as altitude
+from import.inms
+where target = 'ENCELADUS'
+and alt_t IS NOT NULL;

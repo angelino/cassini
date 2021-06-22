@@ -64,3 +64,10 @@ select
 from events
 where (time_stamp at time zone 'UTC')::date='2009-11-02'
 order by time_stamp;
+
+select
+    time_stamp,
+    min(altitude)
+from flyby_altitudes
+group by time_stamp
+order by min(altitude);
